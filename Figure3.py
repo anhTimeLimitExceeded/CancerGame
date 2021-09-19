@@ -26,8 +26,8 @@ iter_tol = 10**(-4)
 hugeVal = 100000 # a large number ~ infinity
 tinyVal = 10**(-10) # a small number ~ 0
 
-tilex = 3
-tiley = 3
+tilex = 4
+tiley = 4
 ## The code partially reproduces Figure 3 from paper
 # Optimizing adaptive cancer therapy: dynamic programming and evolutionary game theory,
 # Proceedings of the Royal Society B: Biological Sciences 287: 20192454 (2020)
@@ -43,7 +43,7 @@ tiley = 3
 
 ## Initializaion of the value function u
 def u_initiation():
-    arr = multiprocessing.Array('d',np.ones((n+1)*(n+1))*hugeVal)
+    arr = multiprocessing.Array('d',np.ones((n+1)*(n+1))*hugeVal,lock=False)
     # skip the half of the domain where x1 + x2 > 1
     for ii in range(0,n+1):
         for jj in range(n-ii+1,n+1):
@@ -263,7 +263,7 @@ def iteratingBlock(k, istart, iend, jstart, jend, size, u, d_mat, change):
 if __name__ == '__main__':     
     ## Initiallization
 
-    d_matr = multiprocessing.Array('d', (n+1)*(n+1))
+    d_matr = multiprocessing.Array('d', (n+1)*(n+1),lock=False)
     u_matr = u_initiation() # value function
     
     start = time.time()
@@ -326,7 +326,7 @@ if __name__ == '__main__':
     #contour(X, Y, uu, 'r')# plot value function
     plt.contour(X,Y,uu,colors=['red'])
     plt.axis([0,1,0,1]) #axis([0 1 0 1])
-    plt.show(fig)
+    plt.show()
     #shading flat
     
     ## References
